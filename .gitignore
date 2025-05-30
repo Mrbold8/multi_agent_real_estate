@@ -15,3 +15,6 @@ venv/
 # IDE болон editor-ийн тохиргоо
 .vscode/
 .idea/
+
+# macOS системийн файл
+.DS_Store
