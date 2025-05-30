@@ -1,0 +1,17 @@
+# Python bytecode файлууд
+__pycache__/
+*.pyc
+*.pyo
+
+# FAISS болон binary index файлууд
+*.faiss
+*.pkl
+
+# Virtual environment
+.venv/
+env/
+venv/
+
+# IDE болон editor-ийн тохиргоо
+.vscode/
+.idea/

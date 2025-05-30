@@ -12,3 +12,7 @@ google-adk
 google-genai
 tavily-python
 faiss-cpu
+sentence-transformers
+torch
+torchvision
+torchaudio
