@@ -16,17 +16,14 @@ import urllib.request
 from bs4 import BeautifulSoup
 
 def findFeature(li_list, header):
-  ret = 'NA'
-  for li in li_list:
-    text = li.text.strip()
-    if text.startswith(header):
-      return text[len(header) + 1:]
-  return ret
+    ret = 'NA'
+    for li in li_list:
+        text = li.text.strip()
+        if text.startswith(header):
+            return text[len(header) + 1:]
+    return ret
 
 class RealEstatePageRetriever(BaseAgent):
-    # --- Field Declarations for Pydantic ---
-
-    # model_config allows setting Pydantic configurations if needed, e.g., arbitrary_types_allowed
     model_config = {"arbitrary_types_allowed": True}
 
     def __init__(self, name: str):
@@ -35,34 +32,53 @@ class RealEstatePageRetriever(BaseAgent):
     @override
     async def _run_async_impl(self, ctx: InvocationContext) -> AsyncGenerator[Event, None]:
         url_text = ctx.session.events[0].content.parts[0].text
-        # for event in ctx.session.events:
-        #     print("Event ", event)
-        #     if hasattr(event.content.parts[0], "text"):
-        #         print("event text: ", )
-        # print("event text: ", ctx.session.events[0])
-        url = url_text
+        url = url_text.strip()
 
-        response = requests.get(url)
-        if response.status_code != 200:
-            print(response.status_code)
-            print('error ',url)
-        else:
-            # Extracting the information from the given web page.
-            soup = BeautifulSoup(response.text,"html.parser")
-            title = soup.find("h1", {"class": "title-announcement"}).text.strip()
-            price = soup.find("div", {"class": "announcement-price__cost"}).text.replace('үнэ тохирно','').strip()
+        print("Fetched URL:", url)
+
+        response = None
+        try:
+            response = requests.get(url, timeout=10)
+        except Exception as e:
+            print("Request error:", e)
+
+        if response and response.status_code == 200:
+            soup = BeautifulSoup(response.text, "html.parser")
+
+            title_tag = soup.find("h1", {"class": "title-announcement"})
+            title = title_tag.text.strip() if title_tag else "N/A"
+
+            price_tag = soup.find("div", {"class": "announcement-price__cost"})
+            price = price_tag.text.replace('үнэ тохирно', '').strip() if price_tag else "N/A"
+
+            location_tag = soup.find("span", {"itemprop": "address"})
+            location = location_tag.text.strip() if location_tag else "N/A"
+
             li_class = soup.find_all("li")
-            location = soup.find("span", {"itemprop": "address"}).text.strip()
-            space = findFeature(li_class,'Талбай:')
-            print("title ", title)
-            print("price", price)
-            print("location",location)
-            print("space", space)
+            space = findFeature(li_class, 'Талбай:')
 
-        yield Event(
-            invocation_id=ctx.invocation_id,
-            actions=EventActions(state_delta={"title": title, "price": price, "location": location, "space": space}),
-            content=types.Content(parts=[types.Part(text="URL is loaded and extracted.")]),
-            author=self.name,
-            branch=ctx.branch
-        )
+            print("title:", title)
+            print("price:", price)
+            print("location:", location)
+            print("space:", space)
+
+            yield Event(
+                invocation_id=ctx.invocation_id,
+                actions=EventActions(state_delta={
+                    "title": title,
+                    "price": price,
+                    "location": location,
+                    "space": space
+                }),
+                content=Content(parts=[Part(text="URL is loaded and extracted.")]),
+                author=self.name,
+                branch=ctx.branch
+            )
+        else:
+            print(f"Invalid response or status code for URL: {url}")
+            yield Event(
+                invocation_id=ctx.invocation_id,
+                content=Content(parts=[Part(text="Failed to retrieve property data.")]),
+                author=self.name,
+                branch=ctx.branch
+            )
