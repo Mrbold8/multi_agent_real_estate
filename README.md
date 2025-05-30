@@ -1,2 +1,6 @@
-# multi_agent_real_estate
-real_estate multi agent system
+#Үл хөдлөх хөрөнгийн туслах
+
+Гүйцэтгэсэн багийн гишүүд: 
+- Амарболд 21B1NUM0606
+- Цолмон 21B1NUM1497
+- Ариунаа 21B1NUM1719
