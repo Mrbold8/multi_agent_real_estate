@@ -16,3 +16,4 @@ sentence-transformers
 torch
 torchvision
 torchaudio
+fpdf2

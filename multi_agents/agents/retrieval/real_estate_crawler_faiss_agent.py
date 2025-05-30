@@ -46,7 +46,7 @@ def extract_listing_data(url):
             "space": findFeature(li_class, 'Талбай:')
         }
     except Exception as e:
-        print("❌ Error parsing", url, e)
+        print("Error parsing", url, e)
         return None
 
 class RealEstateCrawlerAndIndexerAgent(BaseAgent):
@@ -72,11 +72,11 @@ class RealEstateCrawlerAndIndexerAgent(BaseAgent):
             links = soup.select("a[href^='/adv/']")
             unique_urls = list(set(BASE_URL + link['href'] for link in links))
 
-            for url in unique_urls[:10]:  # crawl only first 10 per page for speed
+            for url in unique_urls[:10]: 
                 data = extract_listing_data(url)
                 if data:
                     listings.append(data)
-                time.sleep(1.0)  # prevent being blocked
+                time.sleep(1.0)  
 
         docs = []
         for item in listings:
@@ -90,7 +90,7 @@ class RealEstateCrawlerAndIndexerAgent(BaseAgent):
             invocation_id=ctx.invocation_id,
             author=self.name,
             branch=ctx.branch,
-            content=Content(parts=[Part(text=f"✅ Crawled {len(listings)} listings and indexed to FAISS.")]),
+            content=Content(parts=[]),
             actions=EventActions(state_delta={
                 "crawled_listings": listings,
                 "faiss_index_created": True

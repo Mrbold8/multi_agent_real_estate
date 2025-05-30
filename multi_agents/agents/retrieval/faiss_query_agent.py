@@ -21,7 +21,7 @@ class FaissQueryAgent(BaseAgent):
             self._vectorstore = FAISS.load_local(
                 "faiss_index",
                 self._embedding_model,
-                allow_dangerous_deserialization=True  # ✅ pickle анхааруулга
+                allow_dangerous_deserialization=True
             )
         except Exception as e:
             self._vectorstore = None
@@ -53,14 +53,14 @@ class FaissQueryAgent(BaseAgent):
         results = self._vectorstore.similarity_search(query, k=5)
 
         if not results:
-            answer = "🤷 Тохирох үл хөдлөх хөрөнгийн мэдээлэл олдсонгүй."
+            answer = "Тохирох үл хөдлөх хөрөнгийн мэдээлэл олдсонгүй."
             state_delta = {}
         else:
-            answer = "🏘 Тохирох зарууд:\n\n" + "\n\n".join(
+            answer = "Тохирох зарууд:\n\n" + "\n\n".join(
                 f"{i + 1}. {doc.page_content}" for i, doc in enumerate(results)
             )
 
-            # ✅ Байршлын мэдээллийг үр дүнгээс задлах
+            # Байршлын мэдээллийг үр дүнгээс задлах
             match = re.search(r"Location:\s*(.*)", results[0].page_content)
             location = match.group(1).strip() if match else None
 
@@ -72,6 +72,6 @@ class FaissQueryAgent(BaseAgent):
             invocation_id=ctx.invocation_id,
             author=self.name,
             branch=ctx.branch,
-            content=Content(parts=[Part(text=answer)]),
+            content=Content(parts=[]),
             actions=EventActions(state_delta=state_delta)
         )
