@@ -70,7 +70,7 @@ class RealEstatePageRetriever(BaseAgent):
                     "location": location,
                     "space": space
                 }),
-                content=Content(parts=[Part(text="URL is loaded and extracted.")]),
+                content=Content(parts=[]),
                 author=self.name,
                 branch=ctx.branch
             )
@@ -78,7 +78,7 @@ class RealEstatePageRetriever(BaseAgent):
             print(f"Invalid response or status code for URL: {url}")
             yield Event(
                 invocation_id=ctx.invocation_id,
-                content=Content(parts=[Part(text="Failed to retrieve property data.")]),
+                content=Content(parts=[]),
                 author=self.name,
                 branch=ctx.branch
             )

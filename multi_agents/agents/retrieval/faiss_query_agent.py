@@ -56,7 +56,7 @@ class FaissQueryAgent(BaseAgent):
             answer = "Тохирох үл хөдлөх хөрөнгийн мэдээлэл олдсонгүй."
             state_delta = {}
         else:
-            answer = "Тохирох зарууд:\n\n" + "\n\n".join(
+            answer ="\n\n".join(
                 f"{i + 1}. {doc.page_content}" for i, doc in enumerate(results)
             )
 
@@ -64,7 +64,13 @@ class FaissQueryAgent(BaseAgent):
             match = re.search(r"Location:\s*(.*)", results[0].page_content)
             location = match.group(1).strip() if match else None
 
-            state_delta = {"faiss_answer": answer}
+            top_result = results[0].page_content
+
+            state_delta = {
+                "faiss_answer": answer,
+                "top_result": top_result,
+            }
+
             if location:
                 state_delta["location"] = location
 

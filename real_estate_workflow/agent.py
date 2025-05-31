@@ -20,6 +20,7 @@ from google import genai
 from langchain_core.documents import Document
 from langchain_together import ChatTogether
 
+from multi_agents.agents.retrieval.real_estate_page_agent import RealEstatePageRetriever
 from multi_agents.agents.retrieval.dynamic_retrieval_agent import DynamicRetrievalAgent
 from multi_agents.agents.retrieval.real_estate_crawler_faiss_agent import RealEstateCrawlerAndIndexerAgent
 from multi_agents.agents.retrieval.faiss_query_agent import FaissQueryAgent
@@ -43,6 +44,7 @@ llm = ChatTogether(
 )
 
 # --- Agents ---
+page_retriever = RealEstatePageRetriever(name="page_retriever")
 retriever = DynamicRetrievalAgent(name="dynamic_retrieval")
 crawler_faiss = RealEstateCrawlerAndIndexerAgent(name="crawler_and_indexer")
 faiss_query = FaissQueryAgent(name="faiss_query")
@@ -71,6 +73,7 @@ parallel_analysis_agent = ParallelAgent(
 root_agent = SequentialAgent(
     name="real_estate_workflow",
     sub_agents=[
+        page_retriever,
         parallel_retrieval_agent,
         parallel_analysis_agent,
         writer  # Final summary writer

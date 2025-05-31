@@ -94,17 +94,20 @@ class SimpleWriterAgent(BaseAgent):
         space    = state.get("space")
         listings = state.get("crawled_listings", [])
         faiss_answer = state.get("faiss_answer")
+        top_result = state.get("top_result")
         analysis_background = state.get("analysis_background", [])
 
         sections: list[tuple[str, list[str]]] = []
 
-        # 1. Үл хөдлөх хөрөнгийн товч мэдээлэл
+        # 1. Хэрэглэгчийн асуултад суурилсан хөрөнгийн мэдээлэл
         overview_lines = []
         if title:
             overview_lines.append(f"'{title}' байршил: {location}, хэмжээ: {space} м², үнэ: {price}.")
+        elif top_result: 
+            overview_lines.append(top_result)
         else:
-            overview_lines.append("Үл хөдлөх мэдээлэл байхгүй.")
-        sections.append(("1) Үл хөдлөх хөрөнгийн товч мэдээлэл", overview_lines))
+            overview_lines.append("Асуулт буруу байна.")
+        sections.append(("1) Хэрэглэгчийн асуултад суурилсан хөрөнгийн мэдээлэл", overview_lines))
 
         # 2. Интернэт хайлтын үр дүн
         search_lines = []
@@ -118,7 +121,6 @@ class SimpleWriterAgent(BaseAgent):
         # 3. Unegui.mn сайтын зарууд
         listing_lines = []
         if listings:
-            listing_lines.append(f"Нийт {len(listings)} зар байна.")
             for i, item in enumerate(listings[:5]):
                 listing_lines.append(
                     f"{i+1}. {item['title']} - {item['location']}, {item['space']} м², {item['price']}"
