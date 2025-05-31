@@ -76,6 +76,6 @@ root_agent = SequentialAgent(
         page_retriever,
         parallel_retrieval_agent,
         parallel_analysis_agent,
-        writer  # Final summary writer
+        writer  
     ]
 )

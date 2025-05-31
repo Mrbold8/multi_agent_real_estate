@@ -1,4 +1,3 @@
-# retrieval/tavily_search_agent.py
 import asyncio
 from typing import AsyncGenerator, ClassVar
 from typing_extensions import override
@@ -15,11 +14,9 @@ class TavilySearchAgent(BaseAgent):
     async def _run_async_impl(
         self, ctx: InvocationContext
     ) -> AsyncGenerator[Event, None]:
-        # Extract the user's query text
         raw_content = ctx.user_content
         query = "".join(p.text for p in raw_content.parts if p.text).strip()
 
-        # Build headers and JSON payload
         api_key = os.getenv("TAVILY_API_KEY", "")
         headers = {
             "Authorization": f"Bearer {api_key}",
@@ -41,14 +38,12 @@ class TavilySearchAgent(BaseAgent):
             "exclude_domains": [],
         }
 
-        # Call the Tavily API
         resp = requests.post(self.API_URL, json=payload, headers=headers, timeout=10)
         print(f"[Tavily] HTTP {resp.status_code}, body={resp.text!r}")  # add this
         resp.raise_for_status()
         data = resp.json()
         listings = data.get("results", [])
 
-        # Accumulate URLs and snippets
         urls = []
         contents = []
         for item in listings:
@@ -58,7 +53,6 @@ class TavilySearchAgent(BaseAgent):
                 urls.append(url)
                 contents.append(snippet)
 
-        # Emit a single state update with both lists
         yield Event(
             invocation_id=ctx.invocation_id,
             actions=EventActions(state_delta={
@@ -68,5 +62,5 @@ class TavilySearchAgent(BaseAgent):
             author=self.name,
             branch=ctx.branch
         )
-        # slight delay to respect async
+
         await asyncio.sleep(0.1)
