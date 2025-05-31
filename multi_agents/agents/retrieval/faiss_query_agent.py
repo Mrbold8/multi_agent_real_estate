@@ -8,6 +8,7 @@ from google.genai.types import Content, Part
 
 from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import HuggingFaceEmbeddings
+
 import re
 
 class FaissQueryAgent(BaseAgent):

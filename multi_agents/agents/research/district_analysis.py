@@ -10,7 +10,6 @@ from langchain_together import ChatTogether
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
-
 class DistrictAnalysisAgent(BaseAgent):
     llm_model: ChatTogether
     model_config = {"arbitrary_types_allowed": True}

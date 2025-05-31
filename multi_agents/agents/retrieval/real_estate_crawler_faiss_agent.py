@@ -1,17 +1,21 @@
 from typing import AsyncGenerator
 from typing_extensions import override
+
 from google.adk.agents import BaseAgent
 from google.adk.events import Event, EventActions
 from google.genai.types import Content, Part
 from google.adk.agents.invocation_context import InvocationContext
 
-import requests
-from bs4 import BeautifulSoup
-import time
 from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain.schema import Document
+
+from bs4 import BeautifulSoup
 from pydantic import PrivateAttr
+
+import requests
+import time
+
 
 BASE_URL = "https://www.unegui.mn"
 LISTING_URL = f"{BASE_URL}/l-hdlh/"
