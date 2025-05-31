@@ -12,9 +12,10 @@
 | Шаардлага | Хангаж буй хэлбэр |
 |-----------|-------------------|
 | **Vectorstore ашигласан** | FAISS ашиглан заруудыг embeddings болгон хадгалж, төстэй заруудыг хайдаг (`real_estate_crawler_faiss_agent.py`, `faiss_query_agent.py`) |
-| **5 бүлэгтэй тайлан** | Тайланд: 1) Товч мэдээлэл, 2) Интернэт хайлт, 3) Unegui.mn зарууд, 4) FAISS хайлт, 5) Дүүргийн дүн шинжилгээ багтдаг |
+| **5 бүлэгтэй тайлан** | Тайланд: 1) Товч мэдээлэл, 2) Интернэт хайлт, 3) Unegui.mn зарууд, 4) FAISS хайлт, 5) Дүүргийн дүн шинжилгээ багтсан |
 | **Unegui.mn сайт ашигласан** | BeautifulSoup ашиглан заруудыг татаж, FAISS-д оруулдаг (`real_estate_crawler_faiss_agent.py`) |
 | **Интернэт хайлт ашигласан** | Tavily API ашиглан вэб хайлт хийж, агуулгыг PDF-д оруулдаг (`tavily_search_agent.py`) |
+| **Dynamic Retrieval Agent нэмсэн** | Асуулт эсвэл URL оруулахад тохирох retrieval agent -руу чиглүүлнэ (`dynamic_retrieval_agent.py`) |
 | **PDF тайлан гаргадаг** | Unicode-дэмждэг `fpdf` ашиглан тайлан үүсгэдэг (`simple_writer_agent.py`) |
 | **Chain-of-Thought reasoning ашигласан** | Байршлын логик тайлбар, харьцуулалт бүхий дүн шинжилгээ (`district_analysis.py`) |
 
@@ -37,10 +38,10 @@
 
 | Агент нэр | Үүрэг |
 |-----------|------|
-| `DynamicRetrievalAgent` | Хэрэглэгчийн input-оос URL эсвэл текст таньж `PageRetriever` эсвэл `TavilySearch` руу салгаж өгдөг |
+| `DynamicRetrievalAgent` | Хэрэглэгчийн input -ээс URL эсвэл текст таньж `PageRetriever` эсвэл `TavilySearch` руу салгаж өгдөг |
 | `RealEstateCrawlerAndIndexerAgent` | Unegui.mn сайтаас зарууд татаж, FAISS индекс үүсгэдэг |
 | `FaissQueryAgent` | FAISS-д хадгалагдсан заруудаас төстэй хайлт хийдэг |
-| `TavilySearchAgent` | Түлхүүр үгсээр вэб хайлт хийж, үр дүнг боловсруулдаг |
+| `TavilySearchAgent` | Түлхүүр үгсээр вэб хайлт хийж, үр дүнг боловсруулдаг. Жишээ нь `Хан уул дүүрэгт 2 өрөө байр` |
 | `DistrictAnalysisAgent` | Байршлын мэдээлэлд үндэслэн үнэ, харьцуулалт бүхий дүн шинжилгээ хийдэг |
 | `SimpleWriterAgent` | Бүх үр дүнг цуглуулж, тайлан болгон PDF файл үүсгэдэг |
 
