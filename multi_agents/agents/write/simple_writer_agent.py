@@ -117,7 +117,8 @@ class SimpleWriterAgent(BaseAgent):
                 search_lines.append(c)
         else:
             search_lines.append("Интернэтээс үр дүн олдсонгүй.")
-        sections.append(("2) Интернэт хайлтын үр дүн", search_lines))
+        search_text = "\n".join(search_lines)
+        sections.append(("2) Интернэт хайлтын үр дүн", [search_text]))
 
         # 3. Unegui.mn сайтын зарууд
         listing_lines = []
