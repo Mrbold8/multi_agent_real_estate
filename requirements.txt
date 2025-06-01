@@ -12,8 +12,10 @@ google-adk
 google-genai
 tavily-python
 faiss-cpu
-sentence-transformers
 torch
 torchvision
 torchaudio
 fpdf2
+sentence-transformers
+langchain-huggingface
+fpdf
