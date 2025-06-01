@@ -113,7 +113,8 @@ class SimpleWriterAgent(BaseAgent):
         search_lines = []
         if urls and contents:
             for u, c in zip(urls, contents):
-                search_lines.append(f"{u}: {c}")
+                search_lines.append(f"{u}:")
+                search_lines.append(c)
         else:
             search_lines.append("Интернэтээс үр дүн олдсонгүй.")
         sections.append(("2) Интернэт хайлтын үр дүн", search_lines))
